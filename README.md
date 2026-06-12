@@ -166,5 +166,6 @@ app.jwt.expiration=86400000
 
 ## Integrantes
 
-- _Nombre del Alumno 1_
-- _Nombre del Alumno 2_
+- Benjamín Pérez
+- Claudio Jorquera
+- Simón Astudillo
