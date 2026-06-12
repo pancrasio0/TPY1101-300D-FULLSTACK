@@ -1,171 +1,170 @@
 # TPY1101-300D-FULLSTACK
 
-Repositorio oficial de la Evaluación Diagnóstica Full Stack.
+Aplicación web Full Stack para gestión de usuarios con autenticación JWT.
 
-## Objetivo
+## Stack Tecnológico
 
-Desarrollar una aplicación web Full Stack que permita:
-
-* Login de acceso mediante usuario y contraseña.
-* Listar usuarios.
-* Crear usuarios.
-* Modificar usuarios.
-* Eliminar usuarios.
-
-Tecnologías requeridas:
-
-* Frontend: React
-* Backend: Spring Boot
-* Base de Datos: Oracle, PostgreSQL, MySQL o equivalente.
+- **Frontend:** React 18 + Vite 5 + React Router 6 + Axios
+- **Backend:** Spring Boot 3.2 + Spring Security + Spring Data JPA
+- **Base de Datos:** PostgreSQL
+- **Autenticación:** JWT (JSON Web Tokens)
 
 ---
 
 ## Estructura del Proyecto
 
-```text
-/frontend
-/backend
-/database
-README.md
+```
+TPY1101-300D-FULLSTACK/
+├── frontend/          # React + Vite (puerto 5173)
+│   ├── src/
+│   │   ├── api/       # Axios config y servicios
+│   │   ├── context/   # AuthContext (JWT)
+│   │   ├── pages/     # LoginPage, UsuariosPage
+│   │   ├── components/# ProtectedRoute, UsuarioModal, UsuarioTable
+│   │   └── styles/    # Módulos CSS
+│   └── package.json
+├── backend/           # Spring Boot (puerto 8080)
+│   ├── src/main/java/com/app/usuarios/
+│   │   ├── config/    # SecurityConfig, JwtFilter
+│   │   ├── controller/# AuthController, UsuarioController
+│   │   ├── dto/       # LoginRequest, LoginResponse, UsuarioDTO
+│   │   ├── model/     # Usuario (JPA entity)
+│   │   ├── repository/# UsuarioRepository
+│   │   └── service/   # AuthService, UsuarioService, JwtService
+│   ├── src/main/resources/
+│   │   └── application.properties
+│   └── pom.xml
+├── database/
+│   └── init.sql       # Script de creación de DB y tablas
+└── README.md
 ```
 
 ---
 
-## Inicio de la Actividad
+## Requisitos Previos
 
-### 1. Crear un Fork del Repositorio
+- **Java 17+** (usado: Java 21)
+- **Node.js 18+** (usado: Node 25)
+- **npm**
+- **PostgreSQL 12+** corriendo en `localhost:5432`
 
-Desde GitHub, presione el botón **Fork** para crear una copia del repositorio en su cuenta personal.
+---
 
-Ejemplo:
+## Instalación y Ejecución
 
-Repositorio original:
+### 1. Base de Datos
 
-```text
-https://github.com/rodolfogonzaleza/TPY1101-300D-FULLSTACK
+Ejecutar como superusuario de PostgreSQL:
+
+```bash
+psql -U postgres -f database/init.sql
 ```
 
-Fork del alumno:
+Esto crea:
+- Base de datos `usuarios_db`
+- Usuario `app_user` con password `app_pass`
+- Tabla `usuarios`
+- Datos de prueba (admin + user1)
 
-```text
-https://github.com/USUARIO_GITHUB/TPY1101-300D-FULLSTACK
+### 2. Backend (Spring Boot)
+
+```bash
+cd backend
+mvn clean package          # compilar (opcional, ya viene precompilado)
+java -jar target/usuarios-1.0.0.jar
+```
+
+El backend inicia en **http://localhost:8080**.
+
+### 3. Frontend (React + Vite)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+El frontend inicia en **http://localhost:5173**.
+
+---
+
+## Puertos Utilizados
+
+| Componente | Puerto |
+|---|---|
+| Frontend (Vite) | 5173 |
+| Backend (Spring Boot) | 8080 |
+| Base de Datos (PostgreSQL) | 5432 |
+
+---
+
+## API Endpoints
+
+| Método | Endpoint | Auth | Descripción |
+|---|---|---|---|
+| POST | `/api/auth/login` | No | Iniciar sesión |
+| GET | `/api/usuarios` | JWT | Listar usuarios |
+| GET | `/api/usuarios/{id}` | JWT | Obtener usuario por ID |
+| POST | `/api/usuarios` | JWT | Crear usuario |
+| PUT | `/api/usuarios/{id}` | JWT | Actualizar usuario |
+| DELETE | `/api/usuarios/{id}` | JWT | Eliminar usuario |
+
+---
+
+## Credenciales de Prueba
+
+| Usuario | Contraseña | Rol |
+|---|---|---|
+| `admin` | `admin123` | ADMIN |
+| `user1` | `user123` | USER |
+
+El rol ADMIN puede crear, editar y eliminar usuarios. El rol USER tiene acceso de solo lectura.
+
+---
+
+## Dependencias
+
+### Frontend
+
+| Dependencia | Versión |
+|---|---|
+| react | ^18.2.0 |
+| react-dom | ^18.2.0 |
+| react-router-dom | ^6.22.0 |
+| axios | ^1.6.0 |
+| vite | ^5.1.0 |
+
+### Backend
+
+| Dependencia | Versión |
+|---|---|
+| Spring Boot | 3.2.5 |
+| spring-boot-starter-web | - |
+| spring-boot-starter-security | - |
+| spring-boot-starter-data-jpa | - |
+| postgresql | runtime |
+| lombok | optional |
+| jjwt (api, impl, jackson) | 0.12.3 |
+
+---
+
+## Configuración de Base de Datos
+
+Archivo: `backend/src/main/resources/application.properties`
+
+```properties
+server.port=8080
+spring.datasource.url=jdbc:postgresql://localhost:5432/usuarios_db
+spring.datasource.username=app_user
+spring.datasource.password=app_pass
+spring.jpa.hibernate.ddl-auto=update
+app.jwt.secret=miClaveSecretaMuyLargaParaHMAC256BitsMinimo1234567890
+app.jwt.expiration=86400000
 ```
 
 ---
 
-### 2. Clonar el Fork
+## Integrantes
 
-```bash
-git clone https://github.com/USUARIO_GITHUB/TPY1101-300D-FULLSTACK.git
-```
-
-Ingresar al proyecto:
-
-```bash
-cd TPY1101-300D-FULLSTACK
-```
-
----
-
-### 3. Crear una Rama de Trabajo
-
-Cada dupla deberá crear una rama basada en `main` utilizando el siguiente formato:
-
-```text
-NombreAlumno1-NombreAlumno2
-```
-
-Ejemplo:
-
-```bash
-git checkout -b JuanPerez-MariaSoto
-```
-
-Verificar rama actual:
-
-```bash
-git branch
-```
-
----
-
-## Reglas
-
-Cada dupla deberá:
-
-1. Crear una rama propia basada en `main`.
-2. Desarrollar la solución sobre dicha rama.
-3. Realizar commits periódicos durante el desarrollo.
-4. Subir periódicamente los avances al repositorio GitHub.
-5. Entregar el trabajo completamente publicado en GitHub.
-
-### Guardar Cambios
-
-```bash
-git add .
-git commit -m "avance proyecto"
-```
-
-### Subir Rama por Primera Vez
-
-```bash
-git push -u origin NombreAlumno1-NombreAlumno2
-```
-
-### Subidas Posteriores
-
-```bash
-git push
-```
-
----
-
-## Consideraciones Importantes
-
-* La evaluación tiene una duración máxima de 120 minutos.
-* Esta actividad tiene carácter diagnóstico y no afecta las calificaciones de la asignatura.
-* Está permitido el uso de herramientas de Inteligencia Artificial como apoyo.
-* No se debe trabajar directamente sobre la rama `main`.
-* No se debe subir la carpeta `node_modules`.
-* No se deben subir archivos compilados ni carpetas generadas automáticamente por las herramientas de desarrollo.
-* Se recomienda realizar commits frecuentes durante el desarrollo.
-
----
-
-## Entrega
-
-Al finalizar la evaluación deberán entregar:
-
-* URL del repositorio GitHub (Fork).
-* Nombre de la rama utilizada.
-* Nombre de los integrantes de la dupla.
-* adjuntar Archivo .ZIP de la rama creada
-
-* Evidencia fotográfica de:
-
-  * Pantalla de Inicio de Sesión.
-  * Pantalla de Listado de Usuarios.
-  * Pantalla de Creación de Usuario.
-  * Pantalla de Actualización de Usuario.
-  * Pantalla de Eliminación de Usuario.
-* Enviar toda la información al correo electrónico que será informado durante la actividad.
-
----
-
-## README.md del Proyecto Entregado
-
-El proyecto desarrollado deberá incluir un README propio con:
-
-* Explicación técnica breve de la solución.
-* Instrucciones de instalación.
-* Dependencias utilizadas.
-* Puertos utilizados.
-* Ejecución del frontend.
-* Ejecución del backend.
-* Configuración de la base de datos.
-* Script de creación de tablas (si corresponde).
-* Credenciales de prueba.
-* Integrantes de la dupla.
-
-```
-```
+- _Nombre del Alumno 1_
+- _Nombre del Alumno 2_
