@@ -22,8 +22,8 @@ CREATE TABLE usuarios (
 );
 
 -- Datos iniciales (contraseñas hasheadas con BCrypt, factor 10)
--- admin123  → $2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBpwTTyU.NV/G2
--- user123   → $2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PFR1JIv.Z98KW
+-- admin123  → $2b$10$BN9seYwXLmSM.ngb6hcVAuN56NTncWskrUhyy9sGn2LtJRf00ZvRC
+-- user123   → $2b$10$H1IyknGSUva0NemC7eQBJunmrGb8DRkDrG1vGcR5VrZdpu.ifwD0y
 INSERT INTO usuarios (username, password, nombre, email, rol) VALUES
-    ('admin',  '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBpwTTyU.NV/G2', 'Administrador', 'admin@example.com', 'ADMIN'),
-    ('user1',  '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PFR1JIv.Z98KW', 'Usuario Uno',   'user1@example.com', 'USER');
+    ('admin',  '$2b$10$BN9seYwXLmSM.ngb6hcVAuN56NTncWskrUhyy9sGn2LtJRf00ZvRC', 'Administrador', 'admin@example.com', 'ADMIN'),
+    ('user1',  '$2b$10$H1IyknGSUva0NemC7eQBJunmrGb8DRkDrG1vGcR5VrZdpu.ifwD0y', 'Usuario Uno',   'user1@example.com', 'USER');
